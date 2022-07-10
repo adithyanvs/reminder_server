@@ -59,7 +59,7 @@ app.post('/register', (req, res) => {
 //2.Login API 
 app.post('/login', (req, res) => {
     //Login solving here....>
-    dataService.login(req.body.userid, req.body.pswd,)
+    dataService.login(req.body.userid, req.body.password,)
     .then(result => {
         res.status(result.statusCode).json(result)
     })   
@@ -67,7 +67,7 @@ app.post('/login', (req, res) => {
 //3.Add event API
 app.post('/addevent',jwtMiddleware, (req, res) => {
     //Add event solving here....>
-    dataService.addEvent(req.body.userid, req.body.password,req.body.date,req.body.event)
+    dataService.addEvent(req.body.date,req.body.event)
     .then(result => {
         res.status(result.statusCode).json(result)
     })   

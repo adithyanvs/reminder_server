@@ -38,14 +38,14 @@ const regiser = (username, userid, password) => {
 }  
 
 //login resolve
-const login = (userid, pswd) => {
+const login = (userid, password) => {
 
     return db.user.findOne({
       userid,
-      password: pswd
+      password: password
     }).then(user => {
       if (user) {
-        currentUser = user.username
+        currentUser = user.name
         currentuserid = userid
         //token generation
         token = jwt.sign({
@@ -72,11 +72,11 @@ const login = (userid, pswd) => {
     })
 } 
 //Add event resolve
-const addEvent = (req, userid, password,date,event) => {
-  var event = parseInt(event)
-  var date = parseInt(date)
+const addEvent = (date,event) => {
+  // var event = parseInt(event)
+  // var date = parseInt(date)
   return db.user.findOne({
-    userid, password
+    date, event
   }).then(user => {
     if (user) {
        if (userid != req.currentuserid) {
