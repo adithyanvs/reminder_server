@@ -42,11 +42,11 @@ const login = (userid, password) => {
 
     return db.user.findOne({
       userid,
-      password: password
+      password:password
     }).then(user => {
       if (user) {
         currentUser = user.name
-        currentuserid = userid
+        currentuserid =userid
         //token generation
         token = jwt.sign({
           //store account number inside token
@@ -72,24 +72,17 @@ const login = (userid, password) => {
     })
 } 
 //Add event resolve
-const addEvent = (date,event) => {
+const addEvent = (req,date,message) => {
   // var event = parseInt(event)
   // var date = parseInt(date)
+  let currentuserid=req.currentuserid
   return db.user.findOne({
-    date, event
+    userid:currentuserid
   }).then(user => {
     if (user) {
-       if (userid != req.currentuserid) {
-        return {
-          status: false,
-          message: "permission Denied",
-          statusCode: 401
-        }
-       }
-      
       user.event.push({
-         type: date,
-        event: event
+         date: date,
+        event: message
       })
       user.save()
       return {
@@ -107,11 +100,14 @@ const addEvent = (date,event) => {
   })
 }
 
-//view event
-const viewEvent = (userid) => {
+//get event
+const getEvent = (req,currentuserid) => {
+  let userid =currentuserid
+  // console.log(userid+"from bknd");
   return db.user.findOne({
-    userid
+    userid:currentuserid
   }).then(user => {
+    // console.log(user);
     if (user) {
       return {
         staus: true,
@@ -154,6 +150,6 @@ module.exports = {
     regiser,
     login,
     addEvent,
-    viewEvent,
+    getEvent,
     deleteEvent
   }

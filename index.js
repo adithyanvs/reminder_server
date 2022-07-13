@@ -23,20 +23,20 @@ app.use(express.json())//used to convert requested JSON formate data into string
 
 //application specific middleware
 const appMiddleware = (req, res, next) => {
-    console.log("application specific middleware");
+    // console.log("application specific middleware");
     next()
 }
 //use middleware in app
 app.use(appMiddleware)
 
-//Event viewer server
+//jwt token middleware
 const jwtMiddleware = (req,res,next) => {
     //fetch token
     try {
         token = req.headers['x-access-token'] //token = req.body.token =>token given in body section or token given in header secion
         //verfy token
         const data = jwt.verify(token, 'supersecretkey12345')
-        console.log(data);
+        //console.log(data);
         req.currentuserid = data.currentuserid
         next()
     }
@@ -67,15 +67,15 @@ app.post('/login', (req, res) => {
 //3.Add event API
 app.post('/addevent',jwtMiddleware, (req, res) => {
     //Add event solving here....>
-    dataService.addEvent(req.body.date,req.body.event)
+    dataService.addEvent(req,req.body.date,req.body.message)
     .then(result => {
         res.status(result.statusCode).json(result)
     })   
 })
-//4.view event API
-app.post('/viewevent',jwtMiddleware, (req, res) => {
+//4.get event API
+app.post('/getEvent',jwtMiddleware, (req, res) => {
     //view event solving here....>
-    dataService.viewEvent(req.body.userid)
+    dataService.getEvent(req,req.body.currentuserid)
     .then(result => {
         res.status(result.statusCode).json(result)
     })   
