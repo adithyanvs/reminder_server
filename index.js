@@ -83,7 +83,7 @@ app.post('/getEvent',jwtMiddleware, (req, res) => {
 //5.Delete event API
 app.post('/deleteevent',jwtMiddleware, (req, res) => {
     //Delete solving here....>
-    dataService.deleteEvent(req.body.userid)
+    dataService.deleteEvent(req,req.k)
     .then(result => {
         res.status(result.statusCode).json(result)
     })   

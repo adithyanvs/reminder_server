@@ -126,22 +126,24 @@ const getEvent = (req,currentuserid) => {
 }
 
 //delete event
-const deleteEvent = (userid) => {
-  return db.user.deleteOne({
-    userid
+const deleteEvent = (req,k) => {
+  let value = k;
+  let currentuserid = req.currentuserid
+  return db.user.findOne({
+    userid:currentuserid
   }).then(user => {
-    if (!user) {
-      return {
-        staus: false,
-        message: "operation failed !!!",
-        statusCode: 401
-      }
+    if (user) {
+      
+       console.log("user"); 
+       user.event.splice(k,1)
+      
     }
+    user.save()
 
     return {
       status: true,
-      statusCode: 200,
-      message: "Sccessfully Deleted"
+      message: "Sccessfully Deleted",
+      statusCode: 200
     }
   })
 }
